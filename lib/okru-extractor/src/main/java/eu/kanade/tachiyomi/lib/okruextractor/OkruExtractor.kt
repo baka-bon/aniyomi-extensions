@@ -6,7 +6,7 @@ import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.util.asJsoup
 import okhttp3.Headers
 import okhttp3.OkHttpClient
-import okhttp3.internal.commonEmptyHeaders
+import extensions.utils.commonEmptyHeaders
 
 class OkruExtractor(private val client: OkHttpClient) {
     private val playlistUtils by lazy { PlaylistUtils(client) }

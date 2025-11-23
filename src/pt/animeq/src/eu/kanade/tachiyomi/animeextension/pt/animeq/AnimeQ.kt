@@ -10,7 +10,6 @@ import android.util.Log
 import eu.kanade.tachiyomi.animeextension.pt.animeq.extractors.UniversalExtractor
 import eu.kanade.tachiyomi.animesource.model.SAnime
 import eu.kanade.tachiyomi.animesource.model.Video
-import eu.kanade.tachiyomi.lib.m3u8server.M3u8Integration
 import eu.kanade.tachiyomi.multisrc.dooplay.DooPlay
 import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.util.asJsoup
@@ -22,7 +21,6 @@ import okhttp3.Response
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import kotlin.collections.emptyList
-
 class AnimeQ : DooPlay(
     "pt-BR",
     "AnimeQ",
@@ -73,8 +71,6 @@ class AnimeQ : DooPlay(
     override val prefQualityEntries = prefQualityValues
 
     private val universalExtractor by lazy { UniversalExtractor(client) }
-    private val m3u8Integration by lazy { M3u8Integration(client) }
-
     private fun getPlayerVideos(player: Element): List<Video> {
         val name = player.selectFirst("span.title")!!.text()
             .run {
@@ -105,8 +101,9 @@ class AnimeQ : DooPlay(
             Log.d(tag, "Videos are empty, fetching videos from using universal extractor: $url")
             val newHeaders = headers.newBuilder().set("Referer", baseUrl).build()
             videos = universalExtractor.videosFromUrl(url, newHeaders, name)
-            // Process M3U8 videos through local server (automatic detection)
-            return runBlocking { m3u8Integration.processVideoList(videos) }
+            return videos
+            // FIXME: Process M3U8 videos through local server (automatic detection)
+            //  return runBlocking { m3u8Integration.processVideoList(videos) }
         }
 
         return videos

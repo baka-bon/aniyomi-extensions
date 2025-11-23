@@ -159,9 +159,9 @@ class Q1N : DooPlay(
             "q1n.net/antivirus" in url -> {
                 Log.d(tag, "Fetching videos from using noa extractor: $url")
                 val videos = noaExtractor.videosFromUrl(url, realName)
-                // Process M3U8 videos through local server (automatic detection)
                 return videos
-                // FIXME: runBlocking { m3u8Integration.processVideoList(videos) }
+                // FIXME: Process M3U8 videos through local server (automatic detection)
+                //  runBlocking { m3u8Integration.processVideoList(videos) }
             }
 
             else -> emptyList()
@@ -171,9 +171,9 @@ class Q1N : DooPlay(
             Log.d(tag, "Videos are empty, fetching videos from using universal extractor: $url")
             val newHeaders = headers.newBuilder().set("Referer", baseUrl).build()
             videos = universalExtractor.videosFromUrl(url, newHeaders, realName)
-            // Process M3U8 videos through local server (automatic detection)
             return videos
-            // FIXME: runBlocking { m3u8Integration.processVideoList(videos) }
+            // FIXME: Process M3U8 videos through local server (automatic detection)
+            //  runBlocking { m3u8Integration.processVideoList(videos) }
         }
 
         return videos
